@@ -37,6 +37,13 @@ int main()
     printf("\nRESTANTES EN ARCHIVO CENTRAL:\n");
     MostrarListaPacientes(ArchivoCentral, "Archivo Central Final");
 
+    LiberarLista(&ArchivoCentral);
+    LiberarLista(&PacientesSeguimientoCronico);
+
+    free(cardio);
+    free(pediatria);
+    free(traumato);
+
 
     return 0;
 }
@@ -126,7 +133,7 @@ void EliminarPorDepartamento(NodoPaciente **lista, const char *departamento)
 
     while(actual != NULL)
     {
-        if(strcmp(actual->datos.DepartamentoOrigen, departamento == 0))
+        if(strcmp(actual->datos.DepartamentoOrigen, departamento) == 0)
         {
             NodoPaciente *aEliminar = actual;
 
@@ -189,4 +196,20 @@ void MoverPacientesCronicos(NodoPaciente **origen, NodoPaciente **seguimiento)
             actual = actual->siguiente;
         }
     }
+}
+
+void LiberarLista(NodoPaciente **inicio)
+{
+    NodoPaciente *actual = *inicio;
+    while(actual != NULL)
+    {
+        NodoPaciente *aEliminar = actual;
+        actual = actual->siguiente;
+
+        free(aEliminar->datos.NombreCompleto);
+        free(aEliminar->datos.DepartamentoOrigen);
+        free(aEliminar->datos.DiagnosticoPrincipal);
+        free(aEliminar);        
+    }
+    *inicio = NULL;
 }
