@@ -5,6 +5,7 @@ NodoPaciente *CrearNodo(Paciente p);
 void InsertarAlFinal(NodoPaciente **inicio, Paciente p);
 void GenerarArchivoCentral(NodoPaciente **archivo, Paciente *cardio, Paciente *pedia, Paciente *trauma, int cant, int idInicial);
 void MostrarListaPacientes(NodoPaciente *inicio, const char *titulo);
+void MarcarPosiblesAltas(NodoPaciente *lista, const char *departamento, int edadUmbral);
 
 
 int main()
@@ -17,6 +18,11 @@ int main()
     GenerarArchivoCentral(&ArchivoCentral, cardio, pediatria, traumato, 30, 2201);
 
     MostrarListaPacientes(ArchivoCentral, "LISTA UNIFICADA DE PACIENTES: ");
+
+    MarcarPosiblesAltas(ArchivoCentral, "Pediatria", 3);
+    printf("\nPACIENTES TRAS MARCAR POSIBLES ALTAS (Pediatria menores de 3 años):\n");
+    MostrarListaPacientes(ArchivoCentral, "Archivo Central (Actualizado)");
+
 
     return 0;
 }
@@ -84,4 +90,17 @@ void MostrarListaPacientes(NodoPaciente *inicio, const char *titulo)
         inicio = inicio->siguiente;
     }
     MostrarLinea();
+}
+
+void MarcarPosiblesAltas(NodoPaciente *lista, const char *departamento, int edadUmbral)
+{
+    NodoPaciente *actual = lista;
+    while(actual != NULL)
+    {
+        if(strcmp(actual->datos.DepartamentoOrigen, departamento) == 0 && actual->datos.Edad < edadUmbral)
+        {
+            actual->datos.EstadoAlta = 1;
+        }
+        actual = actual->siguiente;
+    }
 }
