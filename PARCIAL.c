@@ -1,9 +1,10 @@
-#include <funciones.h>
+#include "funciones.h"
 
 NodoPaciente *CrearListaVacia();
 NodoPaciente *CrearNodo(Paciente p);
 void InsertarAlFinal(NodoPaciente **inicio, Paciente p);
 void GenerarArchivoCentral(NodoPaciente **archivo, Paciente *cardio, Paciente *pedia, Paciente *trauma, int cant, int idInicial);
+void MostrarListaPacientes(NodoPaciente *inicio, const char *titulo);
 
 
 int main()
@@ -12,6 +13,10 @@ int main()
     Paciente *pediatria = PacientesPediatria();
     Paciente *traumato = PacientesTraumato();
 
+    NodoPaciente *ArchivoCentral = CrearListaVacia();
+    GenerarArchivoCentral(&ArchivoCentral, cardio, pediatria, traumato, 30, 2201);
+
+    MostrarListaPacientes(ArchivoCentral, "LISTA UNIFICADA DE PACIENTES: ");
 
     return 0;
 }
@@ -57,14 +62,26 @@ void GenerarArchivoCentral(NodoPaciente **archivo, Paciente *cardio, Paciente *p
     {
         Paciente p1 = cardio[i];
         p1.IDPaciente = id++;
-        InsertarAlFInal(archivo, p1);
+        InsertarAlFinal(archivo, p1);
 
         Paciente p2 = pedia[i];
         p2.IDPaciente = id++;
-        InsertarAlFInal(archivo, p2);
+        InsertarAlFinal(archivo, p2);
 
         Paciente p3 = trauma[i];
         p3.IDPaciente = id++;
-        InsertarAlFInal(archivo, p3);
+        InsertarAlFinal(archivo, p3);
     }
+}
+
+void MostrarListaPacientes(NodoPaciente *inicio, const char *titulo)
+{
+    printf("\n%s\n", titulo);
+    MostrarLinea();
+    while(inicio != NULL)
+    {
+        MostrarPaciente(inicio->datos);
+        inicio = inicio->siguiente;
+    }
+    MostrarLinea();
 }
