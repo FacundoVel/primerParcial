@@ -7,6 +7,8 @@ void GenerarArchivoCentral(NodoPaciente **archivo, Paciente *cardio, Paciente *p
 void MostrarListaPacientes(NodoPaciente *inicio, const char *titulo);
 void MarcarPosiblesAltas(NodoPaciente *lista, const char *departamento, int edadUmbral);
 void EliminarPorDepartamento(NodoPaciente **lista, const char *departamento);
+void MoverPacientesCronicos(NodoPaciente **origen, NodoPaciente **seguimiento);
+
 
 
 int main()
@@ -26,6 +28,14 @@ int main()
 
     EliminarPorDepartamento(&ArchivoCentral, "Traumatologia");
     MostrarListaPacientes(ArchivoCentral, "Archivo Central (Sin Traumatología)");
+
+    NodoPaciente *PacientesSeguimientoCronico = CrearListaVacia();
+    MoverPacientesCronicos(&ArchivoCentral, &PacientesSeguimientoCronico);
+
+    printf("\nPACIENTES CON SEGUIMIENTO CRÓNICO:\n");
+    MostrarListaPacientes(PacientesSeguimientoCronico, "Pacientes Cronicos");
+    printf("\nRESTANTES EN ARCHIVO CENTRAL:\n");
+    MostrarListaPacientes(ArchivoCentral, "Archivo Central Final");
 
 
     return 0;
@@ -136,6 +146,43 @@ void EliminarPorDepartamento(NodoPaciente **lista, const char *departamento)
             free(aEliminar->datos.DepartamentoOrigen);
             free(aEliminar->datos.DiagnosticoPrincipal);
             free(aEliminar);
+        }else
+        {
+            anterior = actual;
+            actual = actual->siguiente;
+        }
+    }
+}
+
+int ContieneCronico(const char *texto) {
+    return strstr(texto, "Cronico") != NULL;
+}
+
+void MoverPacientesCronicos(NodoPaciente **origen, NodoPaciente **seguimiento)
+{
+    NodoPaciente *actual = *origen;
+    NodoPaciente *anterior = NULL;
+
+    while(actual != NULL)
+    {
+        if(ContieneCronico(actual->datos.DiagnosticoPrincipal))
+        {
+            NodoPaciente *aMover = actual;
+
+            if (anterior == NULL)
+            {
+                //nodo inicio
+                *origen = actual->siguiente;
+                actual = *origen;
+            }else
+            {
+                anterior->siguiente = actual->siguiente;
+                actual = actual->siguiente;
+            }
+
+            //insertar al principio de la nueva lista
+            aMover->siguiente = *seguimiento;
+            *seguimiento = aMover;
         }else
         {
             anterior = actual;
