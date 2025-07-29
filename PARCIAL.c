@@ -6,6 +6,7 @@ void InsertarAlFinal(NodoPaciente **inicio, Paciente p);
 void GenerarArchivoCentral(NodoPaciente **archivo, Paciente *cardio, Paciente *pedia, Paciente *trauma, int cant, int idInicial);
 void MostrarListaPacientes(NodoPaciente *inicio, const char *titulo);
 void MarcarPosiblesAltas(NodoPaciente *lista, const char *departamento, int edadUmbral);
+void EliminarPorDepartamento(NodoPaciente **lista, const char *departamento);
 
 
 int main()
@@ -22,6 +23,9 @@ int main()
     MarcarPosiblesAltas(ArchivoCentral, "Pediatria", 3);
     printf("\nPACIENTES TRAS MARCAR POSIBLES ALTAS (Pediatria menores de 3 años):\n");
     MostrarListaPacientes(ArchivoCentral, "Archivo Central (Actualizado)");
+
+    EliminarPorDepartamento(&ArchivoCentral, "Traumatologia");
+    MostrarListaPacientes(ArchivoCentral, "Archivo Central (Sin Traumatología)");
 
 
     return 0;
@@ -102,5 +106,40 @@ void MarcarPosiblesAltas(NodoPaciente *lista, const char *departamento, int edad
             actual->datos.EstadoAlta = 1;
         }
         actual = actual->siguiente;
+    }
+}
+
+void EliminarPorDepartamento(NodoPaciente **lista, const char *departamento)
+{
+    NodoPaciente *actual = *lista;
+    NodoPaciente *anterior = NULL;
+
+    while(actual != NULL)
+    {
+        if(strcmp(actual->datos.DepartamentoOrigen, departamento == 0))
+        {
+            NodoPaciente *aEliminar = actual;
+
+            if(anterior == NULL)
+            {
+                //nodo al iniciop
+                *lista = actual->siguiente;
+                actual = *lista;
+            }else
+            {
+                anterior->siguiente = actual->siguiente;
+                actual = actual->siguiente;
+            }
+
+            //liberar strings internos
+            free(aEliminar->datos.NombreCompleto);
+            free(aEliminar->datos.DepartamentoOrigen);
+            free(aEliminar->datos.DiagnosticoPrincipal);
+            free(aEliminar);
+        }else
+        {
+            anterior = actual;
+            actual = actual->siguiente;
+        }
     }
 }
