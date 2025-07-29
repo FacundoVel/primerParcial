@@ -1,2 +1,8 @@
-# primerParcial
-Rehice el primer Parcial para Practica
+Un hospital necesita centralizar las fichas de pacientes provenientes de tres departamentos: Cardiología, Pediatría y Traumatología. Cada departamento tiene un registro inicial de sus pacientes recientes. Usted es parte del equipo de informática médica y debe desarrollar un sistema para gestionar dinámicamente la memoria de estas fichas. Las estructuras necesarias están incluidas en el archivo Funciones.h.
+A partir de tres arreglos iniciales de pacientes (fichasCardio, fichasPediatria, fichasTraumato), resuelva los siguientes puntos:
+Dado los 3 arreglos, cree una lista única (ArchivoCentral) que contenga todas las fichas, considere un ID autoincremental que arranque desde el número 2201 en adelante
+Desarrolle una función que muestre en pantalla todos los pacientes de una lista.
+Implemente una función que reciba: una lista, un DepartamentoOrigen y una edadUmbral. La función debe marcar como "Posible Alta" (actualizar EdadAlta a 1) a todos los pacientes de ese departamento cuya Edad sea menor al edad Umbral. Pruebe esta función con la lista ArchivoCentral para marcar como "Posible Alta" a los pacientes de "Pediatría" menores de 3 años.
+Implemento una función que dada una lista y un DepartamentoOrigen permite eliminar todos los nodos cuyos pacientes provienen de ese departamento. Utilice esta función para eliminar todas las fichas de "Traumatología".
+Hacer una función que modifique la lista de la siguiente forma: Mover todos los pacientes cuyo Diagnóstico Principal contenga la palabra "Cronico" a una nueva lista llamada PacientesSeguimientoCronico. Mantener al resto de los pacientes en la lista Principal. Mostrar ambas listas por pantalla.
+Libere correctamente la memoria utilizada al finalizar el programa.
